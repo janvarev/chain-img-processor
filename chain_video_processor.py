@@ -69,7 +69,7 @@ class ChainVideoProcessor(ChainImgProcessor):
 
                     # adding new frame to the list and starting it
                     temp.append(
-                        ThreadWithReturnValue(target=self.run_chain, args=(frame, {}, chain)))
+                        ThreadWithReturnValue(target=self.run_chain, args=(frame, params, chain)))
                     temp[-1].start()
 
                 while len(temp) > 0:
