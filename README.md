@@ -1,8 +1,9 @@
 # chain-img-processor
 Chain IMG processor with plugins for neuronet pipelines etc.
 
-You can run chain process on images with this processor. Separate phases are described as plugins in separate files.
+You can run chain process on images with this processor. 
 
+Concrete processors are described as separate plugins, and easy to add. Plugins can have their own user options (located in options folder) 
 ## Example 
 
 ![origin](/demo_photo.jpg "origin photo")
