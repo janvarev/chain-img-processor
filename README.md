@@ -69,6 +69,14 @@ Details:
 - for multithreads original code thanks https://github.com/RichardErkhov
 - video save params can be adjusted in ffmpeg_writer.py file.
 
+Example code:
+```python
+chain_processor = ChainVideoProcessor()
+chain_processor.init_with_plugins()
+
+chain_processor.run_video_chain("demo_video.mp4","demo_video_res.mp4", fps=25.0, threads=4, chain="blur") # grayscale affects RGB format, so we don't use it
+```
+
 ## Credits
 - Demo photo from Christopher Campbell https://unsplash.com/photos/rDEOVtE7vOs under Unsplash License
 - Multithreads video original code thanks https://github.com/RichardErkhov
