@@ -59,6 +59,8 @@ Located in `options/core.json` after first run.
 
 Descendant of ChainImgProcessor. Allow you to process whole video file.
 
+IN BETA PHASE, some stuff may be unoptimal and is a subject to change.
+
 Example in `demo_run_video.py`
 
 Details:
