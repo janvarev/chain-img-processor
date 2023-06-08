@@ -31,7 +31,7 @@ class ChainVideoProcessor(ChainImgProcessor):
     def __init__(self):
         ChainImgProcessor.__init__(self)
 
-    def run_video_chain(self, source_video, target_video, fps, threads:int = 1, chain = None, params_frame_gen_func = None):
+    def run_video_chain(self, source_video, target_video, fps, threads:int = 1, chain = None, params_frame_gen_func = None, video_codec = "libx265", video_crf = 14):
         import cv2
         from tqdm import tqdm
         from ffmpeg_writer import FFMPEG_VideoWriter # ffmpeg install needed
@@ -42,7 +42,7 @@ class ChainVideoProcessor(ChainImgProcessor):
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
         temp = []
-        with FFMPEG_VideoWriter(target_video, (width, height), fps) as output_video_ff:
+        with FFMPEG_VideoWriter(target_video, (width, height), fps, codec=video_codec, crf=video_crf) as output_video_ff:
             with tqdm(total=frame_count, desc='Processing', unit="frame", dynamic_ncols=True,
                       bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}{postfix}]') as progress:
                 while True:
