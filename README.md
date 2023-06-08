@@ -3,7 +3,9 @@ Chain IMG processor with plugins for neuronet pipelines etc.
 
 You can run chain process on images with this processor. 
 
-Concrete processors are described as separate plugins, and easy to add. Plugins can have their own user options (located in options folder) 
+Concrete processors are described as separate plugins, and easy to add. Plugins can have their own user options (located in options folder)
+
+Also included chain_video_processer (in BETA phase), that convert videos applying chain to each frame **WITH MULTITHREADING**!
 ## Example 
 
 ![origin](/demo_photo.jpg "origin photo")
@@ -53,5 +55,21 @@ Located in `options/core.json` after first run.
 },
 ```
 
+## chain_video_processor
+
+Descendant of ChainImgProcessor. Allow you to process whole video file.
+
+Example in `demo_run_video.py`
+
+Details:
+- you need ffmpeg to be installed
+- you need fps to be set during call
+- audio will not be passed, you need to add it manually
+- multithreads processing available (through Threads)
+- for multithreads original code thanks https://github.com/RichardErkhov
+- video save params can be adjusted in ffmpeg_writer.py file.
+
 ## Credits
-Demo photo from Christopher Campbell https://unsplash.com/photos/rDEOVtE7vOs under Unsplash License
+- Demo photo from Christopher Campbell https://unsplash.com/photos/rDEOVtE7vOs under Unsplash License
+- Multithreads video original code thanks https://github.com/RichardErkhov
+- FFMPEG_Writer original code licensed under MIT from Zulko (moviepy project) https://github.com/Zulko/moviepy/blob/master/moviepy/video/io/ffmpeg_writer.py
