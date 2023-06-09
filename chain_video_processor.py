@@ -37,14 +37,30 @@ class ChainVideoProcessor(ChainImgProcessor):
         from ffmpeg_writer import FFMPEG_VideoWriter # ffmpeg install needed
 
         cap = cv2.VideoCapture(source_video)
-        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        # width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        # height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+        # first frame do manually - because upscale may happen, we need to estimate width/height
+        ret, frame = cap.read()
+        if params_frame_gen_func is not None:
+            params = params_frame_gen_func(self, frame)
+        else:
+            params = {}
+        frame_processed, params = self.run_chain(frame,params,chain)
+        height, width, channels = frame_processed.shape
+
 
         temp = []
         with FFMPEG_VideoWriter(target_video, (width, height), fps, codec=video_codec, crf=video_crf, audiofile=video_audio) as output_video_ff:
             with tqdm(total=frame_count, desc='Processing', unit="frame", dynamic_ncols=True,
                       bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}{postfix}]') as progress:
+
+                # do first frame
+                output_video_ff.write_frame(frame_processed)
+                progress.update(1) #
+
+                # do rest frames
                 while True:
                     # getting frame
                     ret, frame = cap.read()
