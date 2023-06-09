@@ -1,11 +1,17 @@
 # chain-img-processor
 Chain IMG processor with plugins for neuronet pipelines etc.
 
-You can run chain process on images with this processor. 
+You can run pipeline of image transformations with this processor. 
 
-Concrete processors are described as separate plugins, and easy to add. Plugins can have their own user options (located in options folder)
+Concrete transformation is described as separate plugin, and easy to add or remove. Plugins/transformations can have their own user options (located in options folder)
 
 Also included chain_video_processer (in BETA phase), that convert videos applying chain to each frame **WITH MULTITHREADING**!
+
+List of additional plugins here:
+https://github.com/janvarev/chain-img-processor/issues/1
+- Codeformer plugin for image/face upscaling/restore
+
+
 ## Example 
 
 ![origin](/demo_photo.jpg "origin photo")
@@ -23,6 +29,11 @@ cv2.imwrite("demo_photo_res.jpg", resimg)
 Result:
 
 ![result](/demo_photo_res.jpg "result photo")
+
+### More plugins
+
+Please, post your additional plugins here:
+https://github.com/janvarev/chain-img-processor/issues/1
 
 ## Plugin support
 
