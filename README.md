@@ -1,7 +1,7 @@
 # chain-img-processor
-Chain IMG processor with plugins for neuronet pipelines etc.
+Chain IMG processor framework with plugins for neuronet pipelines etc.
 
-You can run pipeline of image transformations with this processor. 
+You can run pipeline of image transformations with this processor. Also, you can use it as base framework for your own image transformation software. 
 
 Concrete transformation is described as separate plugin, and easy to add or remove. Plugins/transformations can have their own user options (located in options folder)
 
@@ -14,7 +14,6 @@ https://github.com/janvarev/chain-img-processor/issues/1
   - blur
   - to_grayscale
   - resize
-
 
 ## Example 
 
