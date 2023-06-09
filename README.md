@@ -10,6 +10,10 @@ Also included chain_video_processer (in BETA phase), that convert videos applyin
 List of additional plugins here:
 https://github.com/janvarev/chain-img-processor/issues/1
 - Codeformer plugin for image/face upscaling/restore
+- Example plugins
+  - blur
+  - to_grayscale
+  - resize
 
 
 ## Example 
