@@ -50,6 +50,14 @@ class ChainVideoProcessor(ChainImgProcessor):
         frame_processed, params = self.run_chain(frame,params,chain)
         height, width, channels = frame_processed.shape
 
+        self.fill_processors_for_thread_chains(threads,chain)
+        #print(self.processors_objects)
+        #import threading
+        #locks:list[threading.Lock] = []
+        locks: list[bool] = []
+        for i in range(threads):
+            #locks.append(threading.Lock())
+            locks.append(False)
 
         temp = []
         with FFMPEG_VideoWriter(target_video, (width, height), fps, codec=video_codec, crf=video_crf, audiofile=video_audio) as output_video_ff:
@@ -59,19 +67,26 @@ class ChainVideoProcessor(ChainImgProcessor):
                 # do first frame
                 output_video_ff.write_frame(frame_processed)
                 progress.update(1) #
+                cnt_frames = 0
 
                 # do rest frames
                 while True:
                     # getting frame
                     ret, frame = cap.read()
+
                     if not ret:
                         break
-
+                    cnt_frames+=1
+                    thread_ind = cnt_frames % threads
                     # we are having an array of length %gpu_threads%, running in parallel
                     # so if array is equal or longer than gpu threads, waiting
-                    while len(temp) >= threads:
+                    #while len(temp) >= threads:
+                    while locks[thread_ind]:
+                        #print('WAIT', thread_ind)
                         # we are order dependent, so we are forced to wait for first element to finish. When finished removing thread from the list
                         frame_processed, params = temp.pop(0).join()
+                        locks[params["_thread_index"]] = False
+                        #print('OFF',cnt_frames,locks[params["_thread_index"]],locks)
                         # writing into output
                         output_video_ff.write_frame(frame_processed)
                         # updating the status
@@ -84,15 +99,20 @@ class ChainVideoProcessor(ChainImgProcessor):
                         params = {}
 
                     # adding new frame to the list and starting it
+                    locks[thread_ind] = True
+                    #print('ON', cnt_frames, thread_ind, locks)
                     temp.append(
-                        ThreadWithReturnValue(target=self.run_chain, args=(frame, params, chain)))
+                        ThreadWithReturnValue(target=self.run_chain, args=(frame, params, chain, thread_ind)))
                     temp[-1].start()
 
                 while len(temp) > 0:
                     # we are order dependent, so we are forced to wait for first element to finish. When finished removing thread from the list
                     frame_processed, params = temp.pop(0).join()
+                    locks[params["_thread_index"]] = False
                     # writing into output
                     output_video_ff.write_frame(frame_processed)
 
                     progress.update(1)
+
+                #print("FINAL", locks)
 

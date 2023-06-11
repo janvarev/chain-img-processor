@@ -4,7 +4,7 @@ from termcolor import colored, cprint
 
 from typing import Any
 
-version = "3.0.0"
+version = "3.1.0"
 
 
 class ChainImgProcessor(JaaCore):
@@ -44,6 +44,7 @@ class ChainImgProcessor(JaaCore):
             chain = self.default_chain
         if params is None:
             params = {}
+        params["_thread_index"] = thread_index
 
         chain_ar = chain.split(",")
         # init all not inited processors first
@@ -61,6 +62,25 @@ class ChainImgProcessor(JaaCore):
         return img, params
 
     # ---------------- init translation stuff ----------------
+    def fill_processors_for_thread_chains(self, threads:int = 1, chain:str = None):
+        if chain is None:
+            chain = self.default_chain
+
+        chain_ar = chain.split(",")
+        # init all not inited processors first
+        for processor_id in chain_ar:
+            if processor_id != "":
+                if self.processors_objects.get(processor_id) is None:
+                    self.processors_objects[processor_id] = []
+                while len(self.processors_objects[processor_id]) < threads:
+                    self.add_processor_to_list(processor_id)
+
+    def add_processor_to_list(self, processor_id: str):
+        obj = self.processors[processor_id](self)
+        obj.init_plugin()
+        if self.processors_objects.get(processor_id) is None:
+            self.processors_objects[processor_id] = []
+        self.processors_objects[processor_id].append(obj)
     def init_processor(self, processor_id: str):
         if processor_id == "": # blank line case
             return
@@ -72,11 +92,7 @@ class ChainImgProcessor(JaaCore):
         try:
             self.print_blue("TRY: init processor plugin '{0}'...".format(processor_id))
             #self.processors[processor_id][0](self)
-            obj = self.processors[processor_id](self)
-            obj.init_plugin()
-            if self.processors_objects.get(processor_id) is None:
-                self.processors_objects[processor_id] = []
-            self.processors_objects[processor_id].append(obj)
+            self.add_processor_to_list(processor_id)
             self.inited_processors.append(processor_id)
             self.print_blue("SUCCESS: '{0}' inited!".format(processor_id))
 
