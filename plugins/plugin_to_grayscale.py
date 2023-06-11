@@ -1,7 +1,7 @@
 # To grayscale example filter
 # author: Vladislav Janvarev
 
-from chain_img_processor import ChainImgProcessor
+from chain_img_processor import ChainImgProcessor, ChainImgPlugin
 import os
 
 modname = os.path.basename(__file__)[:-3] # calculating modname
@@ -13,21 +13,21 @@ def start(core:ChainImgProcessor):
         "version": "1.0", # version
 
         "img_processor": {
-            "to_grayscale": (init,process) # 1 function - init, 2 - process
+            "to_grayscale": PluginGrayscale # 1 function - init, 2 - process
         }
     }
     return manifest
 
 
-def init(core:ChainImgProcessor):
-    import cv2
-    pass
+class PluginGrayscale(ChainImgPlugin):
+    def init_plugin(self):
+        pass
 
-def process(core:ChainImgProcessor, img, params:dict):
-    # params can be used to transfer some img info to next processors
-    import cv2
-    options = core.plugin_options(modname)
+    def process(self, img, params: dict):
+        # params can be used to transfer some img info to next processors
+        import cv2
+        image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        return image
 
-    return image
+

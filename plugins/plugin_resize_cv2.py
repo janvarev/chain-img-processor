@@ -1,7 +1,7 @@
 # Resize example filter
 # author: Vladislav Janvarev
 
-from chain_img_processor import ChainImgProcessor
+from chain_img_processor import ChainImgProcessor, ChainImgPlugin
 import os
 
 modname = os.path.basename(__file__)[:-3] # calculating modname
@@ -17,7 +17,7 @@ def start(core:ChainImgProcessor):
         },
 
         "img_processor": {
-            "resize_cv2": (init,process) # 1 function - init, 2 - process
+            "resize_cv2": PluginResizeCv2 # 1 function - init, 2 - process
         }
     }
     return manifest
@@ -25,18 +25,18 @@ def start(core:ChainImgProcessor):
 def start_with_options(core:ChainImgProcessor, manifest:dict):
     pass
 
-def init(core:ChainImgProcessor):
-    import cv2
-    pass
+class PluginResizeCv2(ChainImgPlugin):
+    def init_plugin(self):
+        pass
 
-def process(core:ChainImgProcessor, img, params:dict):
-    # params can be used to transfer some img info to next processors
-    import cv2
-    options = core.plugin_options(modname)
+    def process(self, img, params: dict):
+        # params can be used to transfer some img info to next processors
+        import cv2
+        options = self.core.plugin_options(modname)
 
-    scale = options["scale"]
-    #cv.INTER_CUBIC
+        scale = options["scale"]
+        # cv.INTER_CUBIC
 
-    image = cv2.resize(img, None, fx=scale, fy=scale)
+        image = cv2.resize(img, None, fx=scale, fy=scale)
 
-    return image
+        return image

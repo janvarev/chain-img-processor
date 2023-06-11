@@ -1,7 +1,7 @@
 # Blur example filter
 # author: Vladislav Janvarev
 
-from chain_img_processor import ChainImgProcessor
+from chain_img_processor import ChainImgProcessor, ChainImgPlugin
 import os
 
 modname = os.path.basename(__file__)[:-3] # calculating modname
@@ -17,7 +17,7 @@ def start(core:ChainImgProcessor):
         },
 
         "img_processor": {
-            "blur": (init,process) # 1 function - init, 2 - process
+            "blur": PluginBlur
         }
     }
     return manifest
@@ -25,18 +25,17 @@ def start(core:ChainImgProcessor):
 def start_with_options(core:ChainImgProcessor, manifest:dict):
     pass
 
-def init(core:ChainImgProcessor):
-    import cv2
-    pass
+class PluginBlur(ChainImgPlugin):
+    def init_plugin(self):
+        pass
+    def process(self, img, params:dict):
+        # params can be used to transfer some img info to next processors
+        import cv2
+        options = self.core.plugin_options(modname)
 
-def process(core:ChainImgProcessor, img, params:dict):
-    # params can be used to transfer some img info to next processors
-    import cv2
-    options = core.plugin_options(modname)
+        ksize = (int(options["power"]), int(options["power"]))
 
-    ksize = (int(options["power"]), int(options["power"]))
+        # Using cv2.blur() method
+        image = cv2.blur(img, ksize)
 
-    # Using cv2.blur() method
-    image = cv2.blur(img, ksize)
-
-    return image
+        return image

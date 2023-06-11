@@ -4,7 +4,8 @@ from termcolor import colored, cprint
 
 from typing import Any
 
-version = "2.3.0"
+version = "3.0.0"
+
 
 class ChainImgProcessor(JaaCore):
     def __init__(self):
@@ -12,6 +13,8 @@ class ChainImgProcessor(JaaCore):
 
         self.processors:dict = {
         }
+
+        self.processors_objects:dict[str,list[ChainImgPlugin]] = {}
 
         self.default_chain = ""
         self.init_on_start = ""
@@ -36,7 +39,7 @@ class ChainImgProcessor(JaaCore):
         for proc_id in init_on_start_arr:
             self.init_processor(proc_id)
 
-    def run_chain(self, img, params:dict[str,Any] = None, chain:str = None):
+    def run_chain(self, img, params:dict[str,Any] = None, chain:str = None, thread_index:int = 0):
         if chain is None:
             chain = self.default_chain
         if params is None:
@@ -52,7 +55,8 @@ class ChainImgProcessor(JaaCore):
         # run processing
         for proc_id in chain_ar:
             if proc_id != "":
-                img = self.processors[proc_id][1](self, img, params) # params can be modified inside
+                #img = self.processors[proc_id][1](self, img, params) # params can be modified inside
+                img = self.processors_objects[proc_id][thread_index].process(img,params)
 
         return img, params
 
@@ -67,7 +71,12 @@ class ChainImgProcessor(JaaCore):
 
         try:
             self.print_blue("TRY: init processor plugin '{0}'...".format(processor_id))
-            self.processors[processor_id][0](self)
+            #self.processors[processor_id][0](self)
+            obj = self.processors[processor_id](self)
+            obj.init_plugin()
+            if self.processors_objects.get(processor_id) is None:
+                self.processors_objects[processor_id] = []
+            self.processors_objects[processor_id].append(obj)
             self.inited_processors.append(processor_id)
             self.print_blue("SUCCESS: '{0}' inited!".format(processor_id))
 
@@ -94,3 +103,12 @@ class ChainImgProcessor(JaaCore):
 
     def print_blue(self, txt):
         cprint(txt, "blue")
+
+class ChainImgPlugin:
+    def __init__(self, core: ChainImgProcessor):
+        self.core = core
+
+    def init_plugin(self): # here you can init something. Called once
+        pass
+    def process(self, img, params:dict): # process img. Called multiple
+        return img
