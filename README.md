@@ -102,8 +102,9 @@ chain_processor.run_video_chain("demo_video.mp4","demo_video_res.mp4", fps=25.0,
 ```
 
 Example of use row render:
-<video src='https://github.com/janvarev/chain-img-processor/assets/18393788/9be8981a-db3b-4b01-a541-b98df12b61dd' />
+<video src='https://github-production-user-asset-6210df.s3.amazonaws.com/18393788/245530004-9be8981a-db3b-4b01-a541-b98df12b61dd.mp4' width=1024></video>
 
+https://github.com/janvarev/chain-img-processor/assets/18393788/9be8981a-db3b-4b01-a541-b98df12b61dd
 
 ## Credits
 - Demo photo from Christopher Campbell https://unsplash.com/photos/rDEOVtE7vOs under Unsplash License
