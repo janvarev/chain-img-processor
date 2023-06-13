@@ -9,6 +9,8 @@ from typing import Any
 
 #version = "1.0.0"
 
+
+
 class ThreadWithReturnValue(Thread):
 
     def __init__(self, group=None, target=None, name=None,
@@ -116,3 +118,10 @@ class ChainVideoProcessor(ChainImgProcessor):
 
                 #print("FINAL", locks)
 
+_video_processor:ChainVideoProcessor = None
+def get_single_video_processor() -> ChainVideoProcessor:
+    global _video_processor
+    if _video_processor is None:
+        _video_processor = ChainVideoProcessor()
+        _video_processor.init_with_plugins()
+    return _video_processor

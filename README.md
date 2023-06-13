@@ -33,6 +33,14 @@ Result:
 
 ![result](/demo_photo_res.jpg "result photo")
 
+If you set param `chain_processor.is_demo_row_render = True` you can get phases of image transformation (warning: work only on cv2 images, and on images the same size)
+
+This is also can be applied to VIDEO processing too!
+
+Example:
+![result](/demo_photo_res_row.jpg "result row photo")
+
+
 ### More plugins
 
 Please, post your additional plugins here:

@@ -28,6 +28,9 @@ class PluginGrayscale(ChainImgPlugin):
         import cv2
         image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+        # Duplicate the grayscale channel to all three color channels
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+
         return image
 
 
