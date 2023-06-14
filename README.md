@@ -101,6 +101,11 @@ chain_processor.init_with_plugins()
 chain_processor.run_video_chain("demo_video.mp4","demo_video_res.mp4", fps=25.0, threads=4, chain="blur") # grayscale affects RGB format, so we don't use it
 ```
 
+Example of use row render:
+<video src='https://github-production-user-asset-6210df.s3.amazonaws.com/18393788/245530004-9be8981a-db3b-4b01-a541-b98df12b61dd.mp4' width=1024></video>
+
+https://github.com/janvarev/chain-img-processor/assets/18393788/9be8981a-db3b-4b01-a541-b98df12b61dd
+
 ## Credits
 - Demo photo from Christopher Campbell https://unsplash.com/photos/rDEOVtE7vOs under Unsplash License
 - Multithreads video original code thanks https://github.com/RichardErkhov
