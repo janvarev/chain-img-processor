@@ -1,15 +1,20 @@
 # chain-img-processor
 Chain IMG processor framework with plugins for neuronet pipelines etc.
 
-You can run pipeline of image transformations with this processor. Also, you can use it as base framework for your own image transformation software. 
+You can run pipeline of image transformations with this processor. Can be used as base framework for your own image transformation software.  
 
 Concrete transformation is described as separate plugin, and easy to add or remove. Plugins/transformations can have their own user options (located in options folder)
+
+Contains debug render, that render all phases as separate stages in row:
+![result](/demo_photo_res_row.jpg "result row photo")
 
 Also included chain_video_processer (in BETA phase), that convert videos applying chain to each frame **WITH MULTITHREADING**!
 
 List of additional plugins here:
 https://github.com/janvarev/chain-img-processor/issues/1
-- Codeformer plugin for image/face upscaling/restore
+- Additional plugins
+  - [Codeformer plugin](https://github.com/janvarev/chain-img-plugin-codeformer) for image/face upscaling/restore
+  - [Richard roop](https://github.com/RichardErkhov/Richard-roop) contain plugins for faceswap, faceblur
 - Example plugins
   - blur
   - to_grayscale
@@ -105,6 +110,10 @@ Example of use row render:
 <video src='https://github-production-user-asset-6210df.s3.amazonaws.com/18393788/245530004-9be8981a-db3b-4b01-a541-b98df12b61dd.mp4' width=1024></video>
 
 https://github.com/janvarev/chain-img-processor/assets/18393788/9be8981a-db3b-4b01-a541-b98df12b61dd
+
+### Usage example
+
+[Richard roop](https://github.com/RichardErkhov/Richard-roop) - desktop software for Face swap
 
 ## Credits
 - Demo photo from Christopher Campbell https://unsplash.com/photos/rDEOVtE7vOs under Unsplash License
