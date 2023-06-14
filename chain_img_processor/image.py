@@ -4,7 +4,7 @@ from termcolor import colored, cprint
 
 from typing import Any
 
-version = "3.2.0"
+version = "4.0.0"
 
 
 class ChainImgProcessor(JaaCore):

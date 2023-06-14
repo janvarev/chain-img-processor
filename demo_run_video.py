@@ -1,4 +1,4 @@
-from chain_video_processor import ChainVideoProcessor
+from chain_img_processor import ChainVideoProcessor
 
 if __name__ == '__main__':
     chain_processor = ChainVideoProcessor()
